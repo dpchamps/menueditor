@@ -1,0 +1,4 @@
+<ifModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (.*)$ src/server.php?request=$1 [QSA,NC,L]
+</ifModule>
