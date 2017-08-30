@@ -1,23 +1,49 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view></router-view>
   </div>
 </template>
 
-<script>
+<script type="text/babel">
 export default {
-  name: 'app'
+  name: 'app',
+  methods:{
+    checkUserCacheData(){
+      this.$store.dispatch('checkCache')
+        .then( (data) => {
+          var userdata = this.$store.getters.getUsernameToken;
+
+          return this.$api.checkLogin(userdata);
+        }).catch((error) =>{
+        console.log(":(");
+        this.$router.push('/login');
+      }).then(() =>{
+        var currentRoute = this.$router.currentRoute;
+        this.$api.setAuthHeaders({
+          username : this.$store.state.credentials.username,
+          token    : this.$store.state.credentials.token
+        });
+        if(currentRoute == '/' || currentRoute == '/login'){
+          this.$router.push('/dashboard');
+        }
+      });
+    }
+  },
+  watch: {
+    '$route'(to, from, next){
+      this.checkUserCacheData();
+      if(to.path === '/' || to.path === '/login'){
+
+      }
+    }
+  },
+
+  created(){
+    this.checkUserCacheData();
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

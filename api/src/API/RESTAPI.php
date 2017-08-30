@@ -4,11 +4,9 @@ require_once 'API.class.php';
 require_once __DIR__.'./../Models/User.class.php';
 require_once __DIR__.'./../Models/Database.class.php';
 require_once __DIR__.'./../Models/SQL_Statements.class.php';
-require_once __DIR__.'./../Models/Cms.class.php';
 require_once __DIR__.'./../Models/Utilities.class.php';
 require_once __DIR__.'./../Models/Backup.class.php';
 //require endpoint models
-require_once __DIR__.'./../Endpoint_Models/Pages.class.php';
 require_once __DIR__.'./../Endpoint_Models/Page.class.php';
 
 class REST_API extends API
@@ -17,9 +15,7 @@ class REST_API extends API
     private $db;
     private $lists;
     private $sql;
-    private $cms;
     private $util;
-    private $pages;
     private $backup;
 
     private function check_auth_session(){
@@ -79,11 +75,10 @@ class REST_API extends API
         //models
         $this->lists = new List_functions();
         $this->sql = new SQL_Statements();
-        $this->cms = new Cms();
+
         $this->util = new Utilities($this->method);
         $this->User = new User();
         //endpoint models
-        $this->pages = new Pages($this->args, $this->method);
         $this->backup = new Backup();
         $this->authorize_user();
         $this->request = $this->_escapeInputs($this->request);
