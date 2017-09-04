@@ -38,10 +38,8 @@
         setItemFromProperty(){
           let prop = this.$data.currentProperty;
           if(prop.idx){
-            console.log("yayaya", this.$parent.$props.item[prop.key][prop.idx][prop.subkey] );
             this.$parent.$props.item[prop.key][prop.idx][prop.subkey] =  this.$data.currentPropertyValue;
           }else{
-            console.log('toieurtpwoierupt');
             this.$parent.$props.item[prop.key] =  this.$data.currentPropertyValue;
           }
         },

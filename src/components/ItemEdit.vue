@@ -31,7 +31,7 @@
             </select>
           </th>
         </tr>
-        <tr v-for="description, idx in item.descriptions" v-show="description.id !== null">
+        <tr v-for="(description, idx) in item.descriptions" v-show="description.id !== null">
           <th><a href="#" @click.prevent="removeProp">&times;</a></th>
           <item-property
             itemkey="descriptions"
@@ -53,7 +53,28 @@
 
         </tr>
         <tr>
-          <th> <a href="#" @click.prevent="addProp">+</a></th>
+          <th>
+            <a href="#" v-show="isAddDescription" @click.prevent="closeAddDescription">&times;</a>
+          </th>
+          <th >
+            <span v-show="!isAddDescription" @click="addDescription">(add description)</span>
+            <input  class="firstDescriptionField"
+                    @blur="blurAddDescription"
+                    @keydown.enter="pushNewDescription"
+                    v-show="isAddDescription"
+                    v-model="newDescription.text">
+          </th>
+          <th>
+            <span v-show="!isAddDescription" @click="addDescription">(add price)</span>
+            <input
+              @keydown.enter="pushNewDescription"
+              v-show="isAddDescription"
+              v-model="newDescription.price">
+          </th>
+          <th>
+            <a href="#" v-show="isAddDescription" @click.prevent="pushNewDescription">+</a>
+          </th>
+
         </tr>
       </table>
 
@@ -69,12 +90,17 @@
       },
       data(){
         return{
-
+          isAddDescription: false,
+          newDescription:{
+            text : '',
+            price : ''
+          },
+          localItem : {}
         }
       },
       computed:{
         headers(){
-          return this.$parent.itemListHeaders
+          return this.$parent.itemListHeaders;
         },
         section(){
           return this.$route.params.section;
@@ -83,17 +109,47 @@
           return this.$route.params.subpage
         },
         subPages(){
-          return this.$store.getters.pages[this.$route.params.page].subPages;
+          return (this.$store.getters.pages[this.$route.params.page]) ? this.$store.getters.pages[this.$route.params.page].subPages : undefined;
         }
       },
       methods:{
+        pushNewDescription(key){
+          if(!this.$data.newDescription.text){
+            console.warn('A Sub Item Needs a Description');
+            return
+          }
+          let propToPush = this.$lodash.extend({}, this.$data.newDescription, {id: -1});
+          this.$parent.$data.currentItem.descriptions.push(propToPush);
+          this.closeAddDescription();
+          this.addDescription();
+        },
+        addDescription(){
 
-        addProp(){
-
+          this.$data.isAddDescription = true;
+          this.$nextTick(()=>{
+            this.$el.querySelector('.firstDescriptionField').focus();
+          })
+        },
+        closeAddDescription(){
+          this.$data.newDescription.text = "";
+          this.$data.newDescription.price = "";
+          this.$data.isAddDescription = false;
         },
         removeProp(){
 
+        },
+        blurAddDescription(evt){
+          if(evt.target.value === ""){
+            evt.target.focus();
+          }
         }
+      },
+      watch:{
+        '$route'(){
+
+        }
+      },
+      created(){
 
       }
 

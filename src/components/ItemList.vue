@@ -20,7 +20,8 @@
       },
       data(){
         return{
-          itemList: []
+          itemList: [],
+          currentItem: {}
         }
       },
       computed:{
@@ -41,17 +42,9 @@
             return this.$lodash.groupBy(this.$data.itemList, 'header')[header];
           }
         },
-        currentItem(){
-          if(this.$route.params.item){
-            return this.$data.itemList.filter((item) => {
-              return item.id === this.$route.params.item;
-            })[0];
-          }else{
-            return undefined;
-          }
-        },
+
         isOpen(){
-          return this.currentItem !== undefined
+          return !this.$lodash.isEmpty(this.currentItem);
         }
       },
       methods:{
@@ -60,9 +53,19 @@
           this.$api.getItemList(page, subPage).then((response) => {
             this.$data.itemList = [];
             this.$data.itemList = response.data;
+            this.getCurrentItem();
           });
         },
-
+        getCurrentItem(){
+          console.log("getting item", this.$route.params.item);
+          if(this.$route.params.item){
+            this.currentItem = this.$data.itemList.filter((item) => {
+              return item.id === this.$route.params.item;
+            })[0];
+          }else{
+            this.currentItem = {};
+          }
+        },
         checkForItemList(){
           if(this.$route.params.subpage){
             var subPage = this.$route.params.subpage,
@@ -74,6 +77,9 @@
       watch:{
         '$route'(to, from){
           this.checkForItemList();
+        },
+        'currentItem'(){
+          console.log('changed');
         }
       },
       created(){
