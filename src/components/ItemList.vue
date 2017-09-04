@@ -8,7 +8,7 @@
         <input type="checkbox" > <router-link :to="{path: link+section+'/'+item.id }">{{item.title}}</router-link>
       </ol>
     </ul>
-    <item-edit :item="(currentItem) ? currentItem : {}" v-show="isOpen"></item-edit>
+    <item-edit :section="section" :item="(currentItem) ? currentItem : {}" v-show="isOpen"></item-edit>
   </div>
 </template>
 

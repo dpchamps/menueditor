@@ -28,22 +28,34 @@
       methods:{
         getPages(){
           this.$api.getPages().then((response) => {
+            response.data.forEach(page =>{
+
+              this.$store.commit('cache', {
+                'page' :page.title
+              });
+
+            });
+
             this.$data.pages = response.data;
-          })
+          });
         },
         getSubpages(){
           if(this.page){
             this.$api.getSubPages(this.page)
               .then((response) =>{
+
+                this.$store.commit('cache', {
+                  'page' : this.page,
+                  'key'  : 'subPages',
+                  'value': response.data.map((subPage)=>{return subPage.title})
+                });
+
                 this.$data.subPages = [];
                 this.$data.subPages = response.data;
-
               })
               .catch(()=>{
-                console.log('emptying array');
                 this.$data.subPages = [];
               });
-
           }
         },
         getContent(){
