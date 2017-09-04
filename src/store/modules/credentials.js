@@ -19,6 +19,10 @@ var mutations = {
   update(state, user){
     state.username = user.username;
     state.token    = user.token;
+  },
+  clearToken(state){
+    state.token = "";
+    localStorage.setItem('token', '');
   }
 };
 
@@ -28,11 +32,11 @@ var actions = {
         token    = localStorage.getItem('token'),
         response = null;
 
-    if (username) {
+    if (token) {
       commit('update', {username, token});
-      return Promise.resolve();
+      return Promise.resolve({username, token});
     } else {
-      //return Promise.reject();
+      return Promise.reject();
     }
   },
   updateAndCache({commit}, user){

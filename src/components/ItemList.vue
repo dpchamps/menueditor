@@ -8,17 +8,23 @@
         <input type="checkbox" > <router-link :to="{path: link+section+'/'+item.id }">{{item.title}}</router-link>
       </ol>
     </ul>
+    <item-edit :item="(currentItem) ? currentItem : {}" v-show="isOpen"></item-edit>
   </div>
 </template>
 
 <script type="text/babel">
+  import ItemEdit from './ItemEdit';
     export default {
+      components: {
+        ItemEdit
+      },
       data(){
         return{
           itemList: []
         }
       },
       computed:{
+
         itemListHeaders(){
           //return this.$lodash.values( this.$lodash.groupBy(this.$data.itemList, 'header') );
           return this.$lodash.uniq( this.$lodash.map(this.$data.itemList, (item) => { return item.header }))
@@ -34,6 +40,18 @@
           if(header){
             return this.$lodash.groupBy(this.$data.itemList, 'header')[header];
           }
+        },
+        currentItem(){
+          if(this.$route.params.item){
+            return this.$data.itemList.filter((item) => {
+              return item.id === this.$route.params.item;
+            })[0];
+          }else{
+            return undefined;
+          }
+        },
+        isOpen(){
+          return this.currentItem !== undefined
         }
       },
       methods:{
@@ -43,15 +61,23 @@
             this.$data.itemList = [];
             this.$data.itemList = response.data;
           });
-        }
+        },
 
-      },
-      created(){
-        if(this.$route.params.subpage){
-          var subPage = this.$route.params.subpage,
+        checkForItemList(){
+          if(this.$route.params.subpage){
+            var subPage = this.$route.params.subpage,
               page    = this.$route.params.page;
             this.getItemList(page, subPage);
+          }
         }
+      },
+      watch:{
+        '$route'(to, from){
+          this.checkForItemList();
+        }
+      },
+      created(){
+        this.checkForItemList();
       }
     }
 </script>

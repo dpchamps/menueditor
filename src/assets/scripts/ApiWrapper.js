@@ -41,7 +41,6 @@ Api.prototype.logout = function(){
   return this.$axios.get(this.url.logout, this.config);
 };
 Api.prototype.getPages = function(){
-  console.log(this.config);
   return this.$axios.get(this.url.pages, this.config);
 };
 
