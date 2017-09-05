@@ -55,5 +55,26 @@ Api.prototype.getItemList = function(page, subPage){
   subPage = subPage.toLowerCase();
   return this.$axios.get(this.url.pages+'/'+page+'/'+subPage, this.config);
 };
+//create a new item
+Api.prototype.create = function(item){
+  let location = (this.url.pages+'/'+item.location).toLowerCase();
+  return this.$axios.post(location, {
+    data: item
+  }, this.config);
+};
+//change an existing item
+Api.prototype.change = function(item){
+  let location = (this.url.pages+'/'+item.location+item.id).toLowerCase();
+  return this.$axios.put(location, {
+    data: item
+  }, this.config);
+};
+
+//remove an existing item
+Api.prototype.remove = function(item){
+  let location = (this.url.pages+'/'+item.location+item.id).toLowerCase();
+
+  return this.$axios.delete(location, this.config);
+};
 
 export default Api;

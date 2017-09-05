@@ -54,7 +54,10 @@
           return this.$route.params.section;
         },
         link(){
-          return "/dashboard/"+this.$route.params.page+'/'+this.$route.params.subpage+'/';
+          return "/dashboard/"+this.urlFragment;
+        },
+        urlFragment(){
+          return this.$route.params.page+'/'+this.$route.params.subpage+'/';
         },
         itemsInHeader(){
           var header = this.$route.params.section;
@@ -117,6 +120,9 @@
               page    = this.$route.params.page;
             this.getItemList(page, subPage);
           }
+        },
+        itemUrl(){
+
         }
       },
       watch:{
@@ -128,7 +134,7 @@
         this.checkForItemList();
 
         EventBus.$on('itemSaveChanges', (item)=>{
-
+          item.location = this.urlFragment;
           this.$store.commit('pushItem', {
             item,
             type: (item.alteration === "create") ? "create" : "change"
@@ -136,10 +142,13 @@
           this.mergeItemsStagedForChange();
         });
         EventBus.$on('itemRemove', (item)=>{
+          item.location = this.urlFragment;
           this.$store.commit('pushItem', {
             item,
             type: "delete"
-          })
+          });
+          this.mergeItemsStagedForChange();
+
         });
         EventBus.$on('selectAll', ()=>{
           for(let i = 0; i < this.itemList.length; i++){
@@ -153,6 +162,7 @@
           let newItem =  this.$lodash.cloneDeep(this.newItemTemplate);
           newItem.header = this.section;
           newItem.id = Date.now()+"";
+          newItem.location = this.urlFragment;
           this.itemList.push( newItem );
           this.$store.commit('pushItem', {
             item: newItem,
@@ -162,12 +172,8 @@
         });
         EventBus.$on('deleteSelectedItems', ()=>{
           this.itemCheckList.forEach(itemToDelete =>{
-            this.$store.commit('pushItem',{
-              item: itemToDelete,
-              type: "delete"
-            });
+            EventBus.$emit('itemRemove', itemToDelete);
           });
-          this.mergeItemsStagedForChange();
         });
       }
     }

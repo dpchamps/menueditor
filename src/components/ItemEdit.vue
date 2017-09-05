@@ -31,7 +31,7 @@
             </select>
           </th>
         </tr>
-        <tr v-for="(description, idx) in localItem.descriptions" v-show="description.id !== null">
+        <tr v-for="(description, idx) in localItem.descriptions" v-show="description.text !== ''">
           <th ><a href="#" @click.prevent="removeDescription($event, idx)">&times;</a></th>
           <item-property
             itemkey="descriptions"
@@ -123,7 +123,7 @@
             console.warn('A Sub Item Needs a Description');
             return
           }
-          let propToPush = this.$lodash.extend({}, this.$data.newDescription, {id: -1});
+          let propToPush = this.$lodash.extend({}, this.$data.newDescription);
 
           this.localItem.descriptions.push(propToPush);
           this.closeAddDescription();
@@ -142,7 +142,8 @@
           this.$data.isAddDescription = false;
         },
         removeDescription(evt, idx){
-          this.localItem.descriptions.splice(idx, 1);
+          //this.localItem.descriptions.splice(idx, 1);
+          this.localItem.descriptions[idx].text = "";
         },
         blurAddDescription(evt){
           if(evt.target.value === ""){

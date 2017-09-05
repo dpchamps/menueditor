@@ -151,10 +151,11 @@ class SQL_Statements {
         unset($item['id_name']);
 
         foreach($item as $key=>$value){
+            $value = urlencode($value);
             $set .= "$key='$value' ";
         }
         $set = implode(', ', array_filter(explode(" ", $set), 'strlen'));
-
+        $set = urldecode($set);
         return "UPDATE $table
                 SET $set
                 WHERE $table.$id_name=$id        
@@ -215,6 +216,7 @@ class SQL_Statements {
         switch($name){
             case 'query':
                 if(count($args) === 3){
+
                     $this->queryWithTableItemArgs($args[0], $args[1], $args[2]);
                 }
                 if(count($args) == 2){

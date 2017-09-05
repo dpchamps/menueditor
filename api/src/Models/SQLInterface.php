@@ -185,6 +185,7 @@ class SQLInterface
      */
     private function update_title($title, $id){
         $table = $this->queryPrefix."items";
+
         $this->sql->query('update', $table, ['title' => $title, 'id' => $id]);
     }
     /*
