@@ -39,6 +39,17 @@ export default {
 
   created(){
     this.checkUserCacheData();
+    this.$api.$axios.interceptors.response.use(
+      (response) => { return response; },
+      (error) => {
+        switch (error.response.status){
+          case 401:
+          default:
+            this.$router.push('/');
+            this.$store.commit('clearToken');
+        }
+      }
+    );
   }
 }
 </script>

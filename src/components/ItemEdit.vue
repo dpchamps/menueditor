@@ -1,38 +1,38 @@
 <template>
   <div class="item-edit-modal">
     <div class="item-editor">
-
+      <item-edit-bar></item-edit-bar>
       <table>
         <tr class="title">
           <th>Item Title: </th>
           <item-property itemkey="title">
-            <span slot="item">{{item.title}}</span>
+            <span slot="item">{{localItem.title}}</span>
           </item-property>
         </tr>
         <tr class="price">
           <th>Price: </th>
           <item-property itemkey="price">
             <template slot="item">
-              <span v-show="item.price">${{item.price}}</span>
-              <span v-show="!item.price">(add price)</span>
+              <span v-show="localItem.price">${{localItem.price}}</span>
+              <span v-show="!localItem.price">(add price)</span>
             </template>
           </item-property>
         </tr>
         <tr class="header">
           <th>Section</th>
           <th>
-            <select>
-              <option v-for="subPageList in subPages" :selected="(subPageList === subPage)">{{subPageList}}</option>
+            <select @change="subPageLookup" v-model="currentSubPage">
+              <option v-for="subPageList in subPages" :selected="(subPageList === currentSubPage)" :value="subPageList">{{subPageList}}</option>
             </select>
           </th>
           <th>
-            <select>
-              <option v-for="header in headers" :selected="(header === item.header)">{{header}}</option>
+            <select v-model="localItem.header" >
+              <option v-for="header in currentHeaders" :selected="(header === item.header)" :value="header">{{header}}</option>
             </select>
           </th>
         </tr>
-        <tr v-for="(description, idx) in item.descriptions" v-show="description.id !== null">
-          <th><a href="#" @click.prevent="removeProp">&times;</a></th>
+        <tr v-for="(description, idx) in localItem.descriptions" v-show="description.id !== null">
+          <th ><a href="#" @click.prevent="removeDescription($event, idx)">&times;</a></th>
           <item-property
             itemkey="descriptions"
             :itemidx="idx"
@@ -83,10 +83,11 @@
 </template>
 <script type="text/babel">
     import itemProperty from './itemProperty';
+    import itemEditBar from './widgets/itemEditBar'
     export default {
       props: ['item'],
       components: {
-        itemProperty
+        itemProperty, itemEditBar
       },
       data(){
         return{
@@ -95,10 +96,14 @@
             text : '',
             price : ''
           },
-          localItem : {}
+          localItem : {},
+          propertiesNotCommitted: false,
+          currentSubPage : "",
+          currentHeaders : {}
         }
       },
       computed:{
+
         headers(){
           return this.$parent.itemListHeaders;
         },
@@ -109,7 +114,7 @@
           return this.$route.params.subpage
         },
         subPages(){
-          return (this.$store.getters.pages[this.$route.params.page]) ? this.$store.getters.pages[this.$route.params.page].subPages : undefined;
+          return this.$store.getters.getSubPages;
         }
       },
       methods:{
@@ -119,7 +124,8 @@
             return
           }
           let propToPush = this.$lodash.extend({}, this.$data.newDescription, {id: -1});
-          this.$parent.$data.currentItem.descriptions.push(propToPush);
+
+          this.localItem.descriptions.push(propToPush);
           this.closeAddDescription();
           this.addDescription();
         },
@@ -135,23 +141,51 @@
           this.$data.newDescription.price = "";
           this.$data.isAddDescription = false;
         },
-        removeProp(){
-
+        removeDescription(evt, idx){
+          this.localItem.descriptions.splice(idx, 1);
         },
         blurAddDescription(evt){
           if(evt.target.value === ""){
-            evt.target.focus();
+            this.closeAddDescription();
           }
+        },
+        setLocalItem(item){
+          this.localItem = this.$lodash.cloneDeep(item);
+          this.currentHeaders = this.headersInNewSection(this.$parent.$data.itemList);
+          this.currentSubPage = this.subPage;
+        },
+        subPageLookup(evt){
+          let page = this.$route.params.page;
+          return this.$api.getItemList(page, evt.target.value)
+                .then((response) =>{
+                  let newHeaders = this.headersInNewSection(response.data);
+                  this.$set(this.$data, 'currentHeaders', newHeaders );
+                });
+        },
+        headersInNewSection(itemList){
+          return this.$lodash.uniq( this.$lodash.map(itemList, (item) => { return item.header }))
         }
       },
       watch:{
-        '$route'(){
-
+        '$props.item'(){
+          this.setLocalItem(this.$props.item);
         }
+
       },
       created(){
+        this.setLocalItem(this.$props.item);
 
+        this.$watch('localItem', (oldVal, newVal) => {
+          if(!this.$lodash.isEqual(this.$lodash.assign({}, this.localItem), this.$lodash.assign({}, this.$props.item))){
+            EventBus.$emit('propsNotCommitted');
+          }
+        }, {deep: true});
+
+        EventBus.$on('itemUndoChanges', ()=>{
+          this.setLocalItem(this.$props.item);
+        });
       }
+
 
     }
 </script>

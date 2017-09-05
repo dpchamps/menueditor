@@ -32,7 +32,30 @@
         '$route' (to, from, next) {
         }
       },
+      data(){
+        return{
+          propertiesNotCommitted : false
+        }
+      },
       created(){
+        EventBus.$on('propsNotCommitted', () =>{
+          this.propertiesNotCommitted = true;
+        });
+        EventBus.$on('propsCommitted', () =>{
+          this.propertiesNotCommitted = false;
+        })
+      },
+      beforeRouteUpdate (to, from, next) {
+
+        if (this.propertiesNotCommitted) {
+            if (confirm("You have made changes to the item but haven't saved them.\n Do you still want to continue?")) {
+              this.propertiesNotCommitted = false;
+              next();
+            }
+        } else {
+            next();
+        }
+
       }
     }
 </script>

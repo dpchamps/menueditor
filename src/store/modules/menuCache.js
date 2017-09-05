@@ -1,7 +1,9 @@
 "use strict";
 
 const state = {
-  pages: {}
+  pages: {},
+  currentPage: "",
+  currentSubPages: []
 };
 
 const getters = {
@@ -10,8 +12,11 @@ const getters = {
       return state.pages[page].headers;
     }
   },
-  pages: (state) => {
+  getPages: (state) => {
     return state.pages;
+  },
+  getSubPages: (state, getters) => {
+    return state.currentSubPages;
   }
 
 };
@@ -33,8 +38,15 @@ const mutations = {
     if(item.key !== null && item.value !== null){
       _cacheItem[item.key] = item.value;
     }
-
+    state.currentPage = item.page;
     state.pages[item.page] = _cacheItem;
+  },
+
+  setCurrentPage(state, page){
+    state.currentPage = page;
+  },
+  setSubPages(state, subPages){
+    state.currentSubPages = subPages;
   }
 
 };

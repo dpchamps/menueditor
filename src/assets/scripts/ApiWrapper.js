@@ -15,6 +15,8 @@ var Api = function(){
 };
 
 Api.prototype.$axios = axios;
+
+
 Api.prototype.setAuthHeaders = function(credentials){
   this.config.auth = {
     username : credentials.username,

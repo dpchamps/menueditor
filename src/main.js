@@ -10,13 +10,14 @@ import apiWrapper from './assets/scripts/ApiWrapper';
 
 
 
-Vue.prototype.$axios = axios;
 Vue.prototype.$api = new apiWrapper();
-Vue.prototype.$lodash = require('lodash');
 
+
+Vue.prototype.$lodash = require('lodash');
+window.EventBus = new Vue();
 
 Vue.config.productionTip = false;
-
+window._ = require('lodash');
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

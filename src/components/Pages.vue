@@ -34,6 +34,7 @@
                 'page' :page.title
               });
 
+
             });
 
             this.$data.pages = response.data;
@@ -43,13 +44,13 @@
           if(this.page){
             this.$api.getSubPages(this.page)
               .then((response) =>{
-
+                let subPageArray = response.data.map((sub) => {return sub.title});
                 this.$store.commit('cache', {
                   'page' : this.page,
                   'key'  : 'subPages',
-                  'value': response.data.map((subPage)=>{return subPage.title})
+                  'value': subPageArray
                 });
-
+                this.$store.commit('setSubPages', subPageArray);
                 this.$data.subPages = [];
                 this.$data.subPages = response.data;
               })
@@ -61,6 +62,8 @@
         getContent(){
           this.getPages();
           this.getSubpages();
+
+          this.$store.commit('setCurrentPage', this.$route.params.page);
         }
       },
       watch:{
@@ -70,6 +73,7 @@
       },
       created(){
         this.getContent();
+
       }
     }
 </script>

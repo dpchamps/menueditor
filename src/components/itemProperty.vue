@@ -4,6 +4,7 @@
       :data-idx="itemidx"
       :data-subkey="itemsubkey"
       @click.stop.prevent="editProp">
+
     <span v-show="currentProperty.key !== itemkey">
       <slot name="item"></slot>
     </span>
@@ -38,9 +39,10 @@
         setItemFromProperty(){
           let prop = this.$data.currentProperty;
           if(prop.idx){
-            this.$parent.$props.item[prop.key][prop.idx][prop.subkey] =  this.$data.currentPropertyValue;
+            this.$parent.$data.localItem[prop.key][prop.idx][prop.subkey] =  this.$data.currentPropertyValue;
           }else{
-            this.$parent.$props.item[prop.key] =  this.$data.currentPropertyValue;
+
+            this.$parent.$data.localItem[prop.key] =  this.$data.currentPropertyValue;
           }
         },
         updateProp(){
@@ -75,6 +77,9 @@
           }
 
           this.updateProp();
+        },
+        removeProp(){
+          console.log("remove prop");
         }
       }
     }
