@@ -156,6 +156,7 @@ class SQL_Statements {
         }
         $set = implode(', ', array_filter(explode(" ", $set), 'strlen'));
         $set = urldecode($set);
+
         return "UPDATE $table
                 SET $set
                 WHERE $table.$id_name=$id        
@@ -191,7 +192,6 @@ class SQL_Statements {
             Throw new Error('500');
         }
         $query = call_user_func(array($this, $name), $table, $item);
-
         $this->database->query($query);
     }
     /*

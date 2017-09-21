@@ -34,13 +34,14 @@
           newItemTemplate: {
             id: -1,
             header: "",
+            price: "",
             list_order: -1,
             title: "new item",
             descriptions: [
               {
                 id: null,
-                price: null,
-                text: null
+                price: "",
+                text: ""
               }
             ]
           }
@@ -75,7 +76,6 @@
       },
       methods:{
         mergeItemsStagedForChange(){
-          console.log("merging");
           let changes = this.$store.state.changesMade.items;
           changes.forEach(item =>{
             let _item = this.$lodash.find(this.$data.itemList, {id : item.id});
@@ -151,9 +151,10 @@
 
         });
         EventBus.$on('selectAll', ()=>{
-          for(let i = 0; i < this.itemList.length; i++){
-            this.itemCheckList.push(this.itemList[i]);
-          }
+          this.itemCheckList = [];
+          this.itemsInHeader.forEach((item) =>{
+            this.itemCheckList.push(item);
+          });
         });
         EventBus.$on('deSelectAll', ()=>{
           this.itemCheckList = [];
@@ -163,6 +164,7 @@
           newItem.header = this.section;
           newItem.id = Date.now()+"";
           newItem.location = this.urlFragment;
+          newItem.list_order = Date.now()+"";
           this.itemList.push( newItem );
           this.$store.commit('pushItem', {
             item: newItem,
@@ -172,8 +174,17 @@
         });
         EventBus.$on('deleteSelectedItems', ()=>{
           this.itemCheckList.forEach(itemToDelete =>{
+            console.log(itemToDelete.id);
             EventBus.$emit('itemRemove', itemToDelete);
           });
+        });
+        EventBus.$on('swapItems', ()=>{
+
+          let loa = this.itemCheckList[0].list_order;
+          this.itemCheckList[0].list_order = this.itemCheckList[1].list_order;
+          this.itemCheckList[1].list_order = loa;
+          EventBus.$emit('itemSaveChanges', this.itemCheckList[0]);
+          EventBus.$emit('itemSaveChanges', this.itemCheckList[1]);
         });
       }
     }

@@ -34,14 +34,13 @@
 
       methods: {
         getPropertyFromItem(key, idx, subkey){
-          return (idx) ? this.$parent.$props.item[key][idx][subkey]  : this.$parent.$props.item[key];
+          return (idx) ? this.$parent.$data.localItem[key][idx][subkey]  : this.$parent.$data.localItem[key];
         },
         setItemFromProperty(){
           let prop = this.$data.currentProperty;
           if(prop.idx){
             this.$parent.$data.localItem[prop.key][prop.idx][prop.subkey] =  this.$data.currentPropertyValue;
           }else{
-
             this.$parent.$data.localItem[prop.key] =  this.$data.currentPropertyValue;
           }
         },

@@ -30,6 +30,7 @@
             window.location.reload();
           }
         },
+
         commit(){
           if(
             confirm("This is a live update. " +
@@ -38,26 +39,36 @@
 
               let changesList = this.$store.getters.getChangesList;
               let apiCall = null;
-              changesList.forEach(item => {
-                switch(item.alteration){
-                  case 'change':
-                    console.log("changing item");
+              var throt = 0;
+              var throttle = this.$lodash.debounce(()=>{
+                console.log("throttled", ++throt);
+              }, 100);
+              changesList.forEach((item,idx) => {
+                setTimeout(()=>{
+                  switch(item.alteration) {
+                    case 'change':
+                      console.log("changing item");
 
-                    apiCall = this.$api.change(item);
-                        break;
-                  case 'delete':
-                    apiCall = this.$api.remove(item);
-                        break;
-                  case 'create':
-                    apiCall = this.$api.create(item);
-                        break;
-                }
-                this.promiseArray.push(apiCall);
+                      apiCall = this.$api.change(item);
+                      break;
+                    case 'delete':
+                      apiCall = this.$api.remove(item);
+                      break;
+                    case 'create':
+                      apiCall = this.$api.create(item);
+                      break;
+                  }
+                  this.promiseArray.push(apiCall);
+                  if(idx == changesList.length-1){
+                    Promise.all(this.promiseArray).then(()=>{
+                      window.location.reload();
+                    });
+                  }
+                }, ++throt*50);
+
               });
 
-            Promise.all(this.promiseArray).then(() =>{
-             window.location.reload();
-            })
+
 
           }
 

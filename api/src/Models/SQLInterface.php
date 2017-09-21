@@ -18,7 +18,8 @@ class SQLInterface
             'title'         => $this->util->check($data['title']),
             'header'        => $this->util->check($data['header']),
             'price'         => $this->util->check($data['price']),
-            'descriptions'  =>$this->util->check($data['descriptions'])
+            'descriptions'  =>$this->util->check($data['descriptions']),
+            'list_order'  =>$this->util->check($data['list_order'])
         ];
     }
 
@@ -38,7 +39,7 @@ class SQLInterface
      */
     public function reorder_section($header_id){
 
-        $list = $this->db->fetch_all_query("SELECT id, list_order FROM ".$this->queryPrefix."items WHERE header_id=$header_id ORDER BY id");
+        $list = $this->db->fetch_all_query("SELECT id, list_order FROM ".$this->queryPrefix."items WHERE header_id=$header_id ORDER BY list_order");
         $new = Array();
         $start = 0;
         foreach($list as $val){
@@ -189,6 +190,17 @@ class SQLInterface
         $this->sql->query('update', $table, ['title' => $title, 'id' => $id]);
     }
     /*
+     * ORDERS
+     */
+    private function update_list_order($list_order, $id){
+        $table = $this->queryPrefix."items";
+        $header_id = $this->get_header_id_by_id($id);
+
+        $this->sql->query('update', $table, ['list_order' => $list_order, 'id' => $id]);
+        //var_dump($this->db->get_connection()->error);
+        $this->reorder_section($header_id);
+    }
+    /*
      * ITEMS
      */
     private function addItemToDatabase($title, $header_id, $menu_type_id){
@@ -198,7 +210,7 @@ class SQLInterface
             'title'        => $title,
             'header_id'    => $header_id,
             'menu_type_id' => $menu_type_id,
-            'list_order'   => 1
+            'list_order'   => gettimeofday()['usec']
         ]);
 
         return $this->db->get_connection()->insert_id;
@@ -244,7 +256,9 @@ class SQLInterface
             $page = $this->update_header($data['header'], $id);
 
         }
-
+        if($data['list_order']){
+           $this->update_list_order($data['list_order'], $id);
+        }
         if(is_array($data['descriptions'])){
             $this->update_descriptions($data['descriptions'], $id);
         }
