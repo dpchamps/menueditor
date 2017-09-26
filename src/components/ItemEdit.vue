@@ -60,9 +60,9 @@
 
         </tr>
         <tr>
-          <th class="delete-description">
-            <button v-show="isAddDescription" @click.prevent="removeDescription($event, idx)">
-              <i class="fa fa-minus-circle" aria-hidden="true"></i>
+          <th class="add-description">
+            <button v-show="isAddDescription" @click.prevent="pushNewDescription">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </button>
           </th>
           <th >
@@ -80,9 +80,7 @@
               v-show="isAddDescription"
               v-model="newDescription.price">
           </th>
-          <th>
-            <a href="#" v-show="isAddDescription" @click.prevent="pushNewDescription">+</a>
-          </th>
+          <th></th>
 
         </tr>
       </table>
