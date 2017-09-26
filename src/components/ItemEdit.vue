@@ -121,6 +121,9 @@
         },
         subPages(){
           return this.$store.getters.getSubPages;
+        },
+        hasChanged(){
+          return !this.$lodash.isEqual(this.localItem, this.$props.item);
         }
       },
       methods:{
@@ -136,7 +139,6 @@
           this.addDescription();
         },
         addDescription(){
-
           this.$data.isAddDescription = true;
           this.$nextTick(()=>{
             this.$el.querySelector('.firstDescriptionField').focus();
@@ -148,7 +150,6 @@
           this.$data.isAddDescription = false;
         },
         removeDescription(evt, idx){
-          //this.localItem.descriptions.splice(idx, 1);
           this.localItem.descriptions[idx].text = "";
         },
         blurAddDescription(evt){
@@ -186,7 +187,7 @@
         this.setLocalItem(this.$props.item);
 
         this.$watch('localItem', (oldVal, newVal) => {
-          if(!this.$lodash.isEqual(this.$lodash.assign({}, this.localItem), this.$lodash.assign({}, this.$props.item))){
+          if(this.hasChanged){
             EventBus.$emit('propsNotCommitted');
           }
         }, {deep: true});
