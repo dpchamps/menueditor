@@ -10,7 +10,7 @@
   position: relative;
   cursor: pointer;
 }
-.content--editable:after{
+.content--editable:hover:after{
   content: '✎';
   position: absolute;
   width: 20px;
