@@ -14,6 +14,7 @@ Vue.prototype.$api = new apiWrapper();
 
 
 Vue.prototype.$lodash = require('lodash');
+require('font-awesome/scss/font-awesome.scss');
 window.EventBus = new Vue();
 
 Vue.config.productionTip = false;

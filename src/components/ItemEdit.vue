@@ -1,6 +1,6 @@
 <template>
-  <div class="item-edit-modal">
-    <div class="item-editor">
+  <div class="item-edit-modal" @click="close">
+    <div class="item-editor" @click.stop>
       <item-edit-bar></item-edit-bar>
       <table>
         <tr class="title">
@@ -32,7 +32,11 @@
           </th>
         </tr>
         <tr v-for="(description, idx) in localItem.descriptions" v-show="description.text !== ''">
-          <th ><a href="#" @click.prevent="removeDescription($event, idx)">&times;</a></th>
+          <th class="delete-description">
+            <button @click.prevent="removeDescription($event, idx)">
+              <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            </button>
+          </th>
           <item-property
             itemkey="descriptions"
             :itemidx="idx"
@@ -53,8 +57,10 @@
 
         </tr>
         <tr>
-          <th>
-            <a href="#" v-show="isAddDescription" @click.prevent="closeAddDescription">&times;</a>
+          <th class="delete-description">
+            <button v-show="isAddDescription" @click.prevent="removeDescription($event, idx)">
+              <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            </button>
           </th>
           <th >
             <span v-show="!isAddDescription" @click="addDescription">(add description)</span>
@@ -165,6 +171,9 @@
         },
         headersInNewSection(itemList){
           return this.$lodash.uniq( this.$lodash.map(itemList, (item) => { return item.header }))
+        },
+        close(){
+          this.$router.go(-1);
         }
       },
       watch:{
@@ -192,16 +201,5 @@
 </script>
 
 <style lang="scss">
-  .content--editable{
-    position: relative;
-  }
-  .content--editable:after{
-    content: '✎';
-    position: relative;
-    width: 20px;
-    height: 20px;
-  }
-  .content--editable span{
-    pointer-events: none;
-  }
+  @import "../assets/styles/itemEdit.scss";
 </style>

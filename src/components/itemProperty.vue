@@ -8,13 +8,13 @@
     <span v-show="currentProperty.key !== itemkey">
       <slot name="item"></slot>
     </span>
-    <input
+    <textarea
       @click.stop=""
       @blur="blurProp"
       @keyup.enter="updateProp"
       v-show="currentProperty.key === itemkey"
       v-model="currentPropertyValue">
-
+    </textarea>
   </th>
 </template>
 
@@ -67,7 +67,7 @@
           };
 
           this.$nextTick(()=>{
-            evt.target.querySelector('input').focus();
+            evt.target.querySelector('textarea').focus();
           });
         },
         blurProp(){
@@ -78,7 +78,6 @@
           this.updateProp();
         },
         removeProp(){
-          console.log("remove prop");
         }
       }
     }

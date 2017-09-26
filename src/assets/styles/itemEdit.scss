@@ -1,0 +1,81 @@
+.content--editable{
+  position: relative;
+  cursor: pointer;
+}
+.content--editable:after{
+  content: '✎';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top:0;left:-15px;
+}
+.content--editable span{
+  pointer-events: none;
+}
+.content--editable input, .content--editable textarea{
+  width: 87%;
+  padding: 3px;
+  height:2em;
+}
+.content--editable textarea{
+  height: 5em;
+}
+.item-edit-modal{
+  position: absolute;
+  top: 0;
+  left:0;
+  background-color: rgba(0,0,0,0.3);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-editor {
+  background: white;
+  padding: 0 1em 2em 1em;
+  max-width: 750px;
+  width: 100%;
+}
+
+.item-editor th[data-key='title'] textarea, .item-editor th[data-key='price'] textarea, .item-editor th[data-subkey='price'] textarea{
+  height: 2em;
+}
+
+.item-editor th[data-key="descriptions"]{
+  max-width: 80%;
+  padding: 0.5em 0.2em;
+}
+
+.item-editor a{
+  text-decoration: none;
+}
+.item-editor .delete-description{
+  text-align: center;
+}
+.item-editor .delete-description button{
+  color: red;
+  font-size: 15px;
+  text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+}
+.item-editor table{
+  text-align: left;
+  font-family: sans-serif;
+}
+
+/*
+Table Columns
+*/
+
+.item-editor th.delete-description{
+  width: 15%;
+}
+
+.item-editor th[data-subkey='text']{
+  width:60%;
+}
+
+.item-editor th[data-subkey='price']{
+  width:15%;
+}
