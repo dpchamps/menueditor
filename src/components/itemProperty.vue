@@ -36,6 +36,12 @@
         getPropertyFromItem(key, idx, subkey){
           return (idx) ? this.$parent.$data.localItem[key][idx][subkey]  : this.$parent.$data.localItem[key];
         },
+        removeSpecialChars(s){
+          const specialChars = ["\\$","\\.00"];
+          let regEx = new RegExp(specialChars.join('|'), "g");
+
+          return s.replace(regEx, '');
+        },
         setItemFromProperty(){
           let prop = this.$data.currentProperty;
           if(prop.idx){
@@ -45,6 +51,8 @@
           }
         },
         updateProp(){
+          this.currentPropertyValue = this.removeSpecialChars(this.currentPropertyValue);
+
           this.setItemFromProperty();
 
           this.$data.currentProperty = {};
