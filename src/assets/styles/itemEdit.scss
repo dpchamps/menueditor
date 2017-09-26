@@ -102,3 +102,12 @@ Table Columns
   width:20%;
   text-align: left;
 }
+
+@media(max-width: 550px){
+  .item-edit-modal{
+    align-items: flex-start;
+  }
+  .item-editor{
+    min-height: 100%;
+  }
+}

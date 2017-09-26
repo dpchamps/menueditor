@@ -2,6 +2,7 @@
   <div class="item-edit-modal" @click="close">
     <div class="item-editor" @click.stop>
       <item-edit-bar></item-edit-bar>
+      <hr>
       <table class="top-section">
         <tr class="title">
           <th>Item Title: </th>
@@ -34,6 +35,7 @@
         </table>
        <hr>
         <table>
+          <tr><th colspan="3">Item Descriptions</th></tr>
         <tr v-for="(description, idx) in localItem.descriptions" v-show="description.text !== ''">
           <th class="delete-description">
             <button @click.prevent="removeDescription($event, idx)">

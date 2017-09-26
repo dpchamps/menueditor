@@ -37,8 +37,16 @@
 }
 .item-edit-bar .close{
   position: absolute;
+  top:1em;
   right: 0;
   background-color: transparent;
   border-color: $dark-grey;
+}
+
+@media(max-width: 500px) {
+  .item-edit-bar button.remove {
+    display: block;
+    margin-top: 1em;
+  }
 }
 
