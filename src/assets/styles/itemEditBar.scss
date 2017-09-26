@@ -6,28 +6,39 @@
 }
 
 .item-edit-bar button{
-  border: solid 1px #222;
+  border: solid 2px #222;
   color: #222;
   padding: 0.5em 1em;
   border-radius: 4px;
   font-size: 14px;
   margin-right: 7px;
+  cursor: pointer;
 }
-
+.item-edit-bar button.undo{
+  background-color: $green-revert;
+  border-color: darken($green-revert, 15);
+}
 .item-edit-bar button.undo[disabled]{
   background-color: $dark-grey;
+  border-color: $dark-grey;
+  cursor: not-allowed;
+
 }
 
 .item-edit-bar button.save{
   background-color: $blue-change;
+  border-color: darken($blue-change, 15);
 }
 
 .item-edit-bar button.remove{
   background-color: $red-warn;
-}
+  border-color: darken($red-warn, 8);
 
+}
 .item-edit-bar .close{
   position: absolute;
   right: 0;
+  background-color: transparent;
+  border: none;
 }
 
