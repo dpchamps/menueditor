@@ -1,0 +1,33 @@
+@import "vars/palette";
+
+.item-edit-bar{
+  position: relative;
+  padding: 1em 0;
+}
+
+.item-edit-bar button{
+  border: solid 1px #222;
+  color: #222;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 7px;
+}
+
+.item-edit-bar button.undo[disabled]{
+  background-color: $dark-grey;
+}
+
+.item-edit-bar button.save{
+  background-color: $blue-change;
+}
+
+.item-edit-bar button.remove{
+  background-color: $red-warn;
+}
+
+.item-edit-bar .close{
+  position: absolute;
+  right: 0;
+}
+

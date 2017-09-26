@@ -1,10 +1,9 @@
 <template>
   <div class="item-edit-bar">
-    <button @click="undoChanges"> Undo  </button>
-    <button @click="saveChanges"> Save  </button>
-    <button @click="removeItem"> Remove </button>
-
-    <router-link :to="backLink"><button>&times;</button></router-link>
+    <button class="undo" @click="undoChanges" disabled> Undo <i class="fa fa-undo" aria-hidden="true"></i>  </button>
+    <button class="save" @click="saveChanges"> Save <i class="fa fa-download" aria-hidden="true"></i>  </button>
+    <button class="remove" @click="removeItem"> Remove <i class="fa fa-remove" aria-hidden="true"></i> </button>
+    <router-link class="close" :to="backLink"><button><i class="fa fa-remove" aria-hidden="true"></i></button></router-link>
   </div>
 </template>
 
@@ -13,7 +12,6 @@
       methods:{
         undoChanges(){
           EventBus.$emit('propsCommitted');
-
             EventBus.$emit('itemUndoChanges');
         },
         saveChanges(){
@@ -38,5 +36,5 @@
 </script>
 
 <style lang="scss">
-
+  @import "../../assets/styles/itemEditBar.scss";
 </style>
