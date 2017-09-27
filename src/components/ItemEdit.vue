@@ -36,55 +36,60 @@
        <hr>
         <table class="descriptions">
           <tr><th colspan="3">Item Descriptions</th></tr>
-        <tr v-for="(description, idx) in localItem.descriptions" v-show="description.text !== ''">
-          <th class="delete-description">
-            <button class="modify-description" @click.prevent="removeDescription($event, idx)">
-              <i class="fa fa-minus-circle" aria-hidden="true"></i>
-            </button>
-          </th>
-          <item-property
-            itemkey="descriptions"
-            :itemidx="idx"
-            itemsubkey="text"
+          <tbody class="drag-container" v-dragula="localItem.descriptions" service="descriptions">
+            <tr
+              v-for="(description, idx) in localItem.descriptions"
+              v-show="description.text !== ''"
+              :data-key="description.id"
             >
-            <span slot="item">{{description.text}}</span>
-          </item-property>
-          <item-property
-            itemkey="descriptions"
-            :itemidx="idx"
-            itemsubkey="price"
-            >
-            <template slot="item">
-              <span v-show="description.price">${{description.price}}</span>
-              <span v-show="!description.price">(add price)</span>
-            </template>
-          </item-property>
+              <th class="delete-description">
+                <button class="modify-description" @click.prevent="removeDescription($event, idx)">
+                  <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                </button>
+              </th>
+              <item-property
+                itemkey="descriptions"
+                :itemidx="idx"
+                itemsubkey="text"
+              >
+                <span slot="item">{{description.text}}</span>
+              </item-property>
+              <item-property
+                itemkey="descriptions"
+                :itemidx="idx"
+                itemsubkey="price"
+              >
+                <template slot="item">
+                  <span v-show="description.price">${{description.price}}</span>
+                  <span v-show="!description.price">(add price)</span>
+                </template>
+              </item-property>
+            </tr>
+          </tbody>
 
-        </tr>
-        <tr>
-          <th class="add-description">
-            <button class="modify-description" v-show="isAddDescription" @click.prevent="pushNewDescription">
-              <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </button>
-          </th>
-          <th >
-            <span v-show="!isAddDescription" @click="addDescription">(add description)</span>
-            <input  class="firstDescriptionField"
-                    @blur="blurAddDescription"
-                    @keydown.enter="pushNewDescription"
-                    v-show="isAddDescription"
-                    v-model="newDescription.text">
-          </th>
-          <th>
-            <span v-show="!isAddDescription" @click="addDescription">(add price)</span>
-            <input
-              @keydown.enter="pushNewDescription"
-              v-show="isAddDescription"
-              v-model="newDescription.price">
-          </th>
-          <th></th>
-
-        </tr>
+          <tr>
+            <th class="add-description">
+              <button class="modify-description" v-show="isAddDescription" @click.prevent="pushNewDescription">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
+            </th>
+            <th >
+              <span v-show="!isAddDescription" @click="addDescription">(add description)</span>
+              <input  class="firstDescriptionField"
+                      @blur="blurAddDescription"
+                      @keydown.enter="pushNewDescription"
+                      v-show="isAddDescription"
+                      v-model="newDescription.text">
+            </th>
+            <th>
+              <span v-show="!isAddDescription" @click="addDescription">(add price)</span>
+              <input
+                @keydown.enter="pushNewDescription"
+                v-show="isAddDescription"
+                v-model="newDescription.price">
+            </th>
+            <th></th>
+          </tr>
       </table>
 
     </div>
@@ -198,6 +203,34 @@
         EventBus.$on('itemUndoChanges', ()=>{
           this.setLocalItem(this.$props.item);
         });
+
+        let descriptionService = this.$dragula.createService({
+          name: 'descriptions',
+          drake: {
+
+          }
+        });
+
+        descriptionService.on({
+          'dropModel': ({name, el, source, target, dropIndex, model}) => {
+            //swap descriptions, while maintaining ids
+
+            let swapTo = this.localItem.descriptions[ dropIndex ],
+              swapFrom = this.$lodash.find(this.localItem.descriptions, {'id' : el.dataset.key}),
+              store = this.$lodash.extend({}, swapTo);
+
+           swapTo.id = swapFrom.id;
+           swapFrom.id = store.id;
+
+          },
+          'drag' : (opts) =>{
+          },
+          'drop' : (opts) =>{
+
+
+          }
+        })
+
       }
 
 

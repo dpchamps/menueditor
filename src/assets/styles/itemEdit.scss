@@ -42,7 +42,23 @@
   justify-content: center;
   align-items: center;
 }
+.gu-mirror{
+  cursor: grabbing;
+  position: fixed;
+  margin: 0;
+  opacity: .8;
+  pointer-events: none;
+  background-color: white;
+}
+.gu-mirror th{
+  vertical-align: middle;
+  padding: 1em;
+}
+.gu-transit{
+  border-top: solid 2px $dark-grey;
+  background-color: transparentize($green-revert, 0.8)!important;
 
+}
 .item-editor table .section-seperator {
   width: 100%;
   height:30px;

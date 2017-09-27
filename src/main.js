@@ -7,11 +7,11 @@ import router from './router'
 import store from './store';
 import axios from 'axios';
 import apiWrapper from './assets/scripts/ApiWrapper';
-
+const {Vue2Dragula} = require('vue2-dragula');
 
 
 Vue.prototype.$api = new apiWrapper();
-
+Vue.use(Vue2Dragula);
 
 Vue.prototype.$lodash = require('lodash');
 require('font-awesome/scss/font-awesome.scss');
