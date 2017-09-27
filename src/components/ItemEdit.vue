@@ -6,13 +6,13 @@
       <table class="top-section">
         <tr class="title">
           <th>Item Title: </th>
-          <item-property itemkey="title">
+          <item-property itemkey="title" colspan="2">
             <span slot="item">{{localItem.title}}</span>
           </item-property>
         </tr>
         <tr class="price">
           <th>Price: </th>
-          <item-property itemkey="price">
+          <item-property itemkey="price" colspan="2">
             <template slot="item">
               <span v-show="localItem.price">${{localItem.price}}</span>
               <span v-show="!localItem.price">(add price)</span>
@@ -34,11 +34,11 @@
         </tr>
         </table>
        <hr>
-        <table>
+        <table class="descriptions">
           <tr><th colspan="3">Item Descriptions</th></tr>
         <tr v-for="(description, idx) in localItem.descriptions" v-show="description.text !== ''">
           <th class="delete-description">
-            <button @click.prevent="removeDescription($event, idx)">
+            <button class="modify-description" @click.prevent="removeDescription($event, idx)">
               <i class="fa fa-minus-circle" aria-hidden="true"></i>
             </button>
           </th>
@@ -63,7 +63,7 @@
         </tr>
         <tr>
           <th class="add-description">
-            <button v-show="isAddDescription" @click.prevent="pushNewDescription">
+            <button class="modify-description" v-show="isAddDescription" @click.prevent="pushNewDescription">
               <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </button>
           </th>

@@ -6,6 +6,9 @@
   width: 100%;
   user-select: none;
 }
+.item-editor button{
+  cursor: pointer;
+}
 .content--editable{
   position: relative;
   cursor: pointer;
@@ -53,21 +56,31 @@
   height: 2em;
 }
 
-
+table.descriptions{
+  tr:nth-child(even){
+    background-color: rgba(0,0,0,0.1);
+  }
+  th{
+    padding: 1em 0.2em;
+    vertical-align: middle;
+  }
+}
 
 .item-editor a{
   text-decoration: none;
 }
-
-.item-editor .delete-description button{
-  color: darken($red-warn, 12);
+.item-editor .modify-description{
   font-size: 20px;
   text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+  border: none;
+  background: none;
+}
+.item-editor .delete-description button{
+  color: darken($red-warn, 12);
+
 }
 .item-editor .add-description button {
   color: $green-revert;
-  font-size: 20px;
-
 }
 .item-editor table{
   text-align: left;
@@ -89,13 +102,10 @@ Table Columns
 .item-editor th.delete-description{
   width: 10%;
   text-align: left;
-  padding:1em 2em 0 0;
 }
 
 .item-editor th[data-subkey='text']{
   width:80%;
-  //height: 3em;
-  padding: 1em 1em 1em 0;
 }
 
 .item-editor th[data-subkey='price']{

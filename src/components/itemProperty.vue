@@ -1,5 +1,6 @@
 <template>
   <th class="content--editable"
+      :colspan="colspan"
       :data-key="itemkey"
       :data-idx="itemidx"
       :data-subkey="itemsubkey"
@@ -30,7 +31,7 @@
         }
 
       },
-      props:['itemkey', 'itemidx', 'itemsubkey'],
+      props:['itemkey', 'itemidx', 'itemsubkey', 'colspan'],
 
       methods: {
         getPropertyFromItem(key, idx, subkey){
