@@ -135,10 +135,11 @@ class User extends Auth{
      */
     public function change_password($new_pw){
         //insert new password
+        $hash = password_hash($new_pw);
         $this->_db->update(
             $this->login_table,
             $this->_id,
-            Array('password' => MD5($new_pw))
+            Array('password' => $hash )
         );
         //update timestamp
         $this->update_timestamp();
