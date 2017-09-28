@@ -17,34 +17,36 @@ class User extends Auth{
     private $_username;
     private $_logged_in = false;
 
-    public function check_password($password){
-        $id = $this->_db->select_single_item(
+    public function get_user_hash(){
+        return $this->_db->select_single_item(
+            'password',
+            $this->login_table,
+            ["username" => $this->username]
+        );
+    }
+    public function get_user_id(){
+        $this->_id = $this->_db->select_single_item(
             'id',
             $this->login_table,
-            Array(
-               'username' => $this->username,
-               'password' => MD5($password)
-            )
+            ["username" => $this->username]
         );
-        if(!$id){
-            throw new Exception(400);
-        }else{
+    }
+    public function check_password($password){
+        $hash = $this->get_user_hash($password);
+
+        if(password_verify($password, $hash)){
             return true;
+        }else{
+            throw new Exception(400);            
         }
     }
     public function login($username, $password){
-        $query = $this->_db->select(
-            'id',
-            'users',
-            Array(
-                'username' => $username,
-                'password' => MD5($password)
-            )
-        );
-        $this->_id = $query->fetch_assoc();
-        $this->_id = $this->_id['id'];
-
-        if($query->num_rows == 1){
+        //wrapped in try/catch because check_password return a 400 error, 
+        //  but if a user fails a login that is explicitly an unauthorized error
+        try{
+            $this->username = $username;
+            $this->check_password($password);
+            $this->get_user_id();
             //create a new token, and timestamp
             $pair = $this->get_token_timestamp_pair();
             //insert token and timestamp pair into user table
@@ -53,12 +55,10 @@ class User extends Auth{
                 $this->_id,
                 $pair
             );
-
+            var_dump( $this->_db->get_connection()->error );
             $this->token = (string)$pair['token'];
-            //echo $this->_token;
-            $this->username = $username;
             $this->_logged_in = true;
-        }else{
+        }catch(Exception $e){
             throw new Exception(401);
         }
     }
@@ -125,7 +125,6 @@ class User extends Auth{
             INSERT INTO `users`(`id`, `username`, `password`)
             VALUES (NULL, '$username', '$hash')
         ");
-       var_dump($this->_db->get_connection()->error);
         return true;
     }
     /*
