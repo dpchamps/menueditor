@@ -217,7 +217,7 @@
                 ids = this.localItem.descriptions.map(desc => desc.id),
                 currentDragId = this.localItem.descriptions[this.currentDragIdx].id,
                 currentDragIdx = ids.indexOf(currentDragId);
-
+            console.log(dropIndex, ids);
             ids.splice(currentDragIdx, 1);
             ids.splice(dropIndex, 0,  currentDragId);
 

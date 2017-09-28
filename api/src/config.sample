@@ -1,0 +1,32 @@
+<?php
+/*
+ * The API configuration file
+ */
+
+error_reporting(E_ALL);
+
+/**
+ * ALLOW_CORS
+ *  Set to true if you would like the API to set cross origin access headers
+ */
+
+define("ALLOW_CORS", true);
+
+
+/**
+ * Database constants
+ *  Replace these with the appropriate fields for database access.
+ */
+define("DB_HOSTNAME", '');
+define("DB_USERNAME",'');
+define("DB_PASSWORD",'');
+define("DB_DATABASE",'');
+define("DB_CHARSET",'utf8');
+/**
+ * server constants
+ */
+
+//whatever your htdocs, or vhost points the api to, mainly used for API information
+define("SERVER_ROOT", 'api/');
+
+
