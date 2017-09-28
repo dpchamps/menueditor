@@ -91,7 +91,6 @@ class Page{
     }
 
     private function subPageVerbGeneric($subpage, $object, $data){
-
         switch($this->method){
             case 'GET':
                 $item = $this->interface->subpage_item($subpage, $object);

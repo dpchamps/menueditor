@@ -166,6 +166,7 @@ class REST_API extends API
             return null;
         }
         $option = $this->args[0];
+        
         switch($option){
             case('change-password'):
                 $old_pw = $this->util->check($this->request['password']);
@@ -203,6 +204,11 @@ class REST_API extends API
                 }else{
                     return $this->User->check_password($pw);
                 }
+            case('create-user'):
+                $username = $this->util->check($this->request['username']);
+                $password = $this->util->check($this->request['password']);
+
+                return $this->User->create_user($username, $password);
             default:
                 throw new Exception(404);
         }

@@ -111,7 +111,25 @@ class User extends Auth{
 
         $this->token = NULL;
     }
-
+    /*
+     * create a user
+     */
+    public function create_user($username, $password){
+        $hash = password_hash( $password, PASSWORD_DEFAULT );
+        //check that the username doesn't exist
+        $username_check = $this->_db->fetch_all_query("
+            SELECT * FROM `users` WHERE users.username='$username'
+        ");
+        if(!empty($username_check)){
+            throw new Exception(409);
+        }
+        $this->_db->query(" 
+            INSERT INTO `users`(`id`, `username`, `password`)
+            VALUES (NULL, '$username', '$hash')
+        ");
+       var_dump($this->_db->get_connection()->error);
+        return true;
+    }
     /*
      * change user password
      */
