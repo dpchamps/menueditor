@@ -55,7 +55,6 @@ class User extends Auth{
                 $this->_id,
                 $pair
             );
-            var_dump( $this->_db->get_connection()->error );
             $this->token = (string)$pair['token'];
             $this->_logged_in = true;
         }catch(Exception $e){

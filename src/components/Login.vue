@@ -31,6 +31,7 @@
             password : this.$data.password
           };
           this.$api.login(credentials).then((response)=>{
+            console.log(response.data);
             this.$store.dispatch('updateAndCache', response.data);
             this.$router.push('/');
           }).catch(()=> {

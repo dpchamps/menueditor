@@ -1,7 +1,7 @@
 "use strict";
 
 import axios from 'axios';
-const root = 'http://demo.slowbar.net/api';
+const root = 'http://localhost/menu_editor/api';
 
 var Api = function(){
   this.root = root;

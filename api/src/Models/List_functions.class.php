@@ -58,7 +58,8 @@ class List_functions {
                 array_push($unique_array[$id]['descriptions'], Array(
                     'text' => $item['description'],
                     'id' => $item['desc_id'],
-                    'price' => $item['subprice']
+                    'price' => $item['subprice'],
+                    'order' => $item['desc_order']
                 ));
             }else{
                 $unique_array[(int)$id] = Array(
@@ -67,7 +68,8 @@ class List_functions {
                         Array(
                             'text' => $item['description'],
                             'id' => $item['desc_id'],
-                            'price' => $item['subprice']
+                            'price' => $item['subprice'],
+                            'order' => $item['desc_order']
                         )
                     ),
                     'price' => $item['price'],

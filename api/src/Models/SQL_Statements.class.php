@@ -58,12 +58,11 @@ class SQL_Statements {
 
         $statement = "select
                 $items.list_order, $items.id, $headers.header as header, $items.title, 
-                $descriptions.description, $descriptions.id as desc_id, $prices.price as price,
+                $descriptions.description, $descriptions.id as desc_id, $descriptions.list_order as desc_order, $prices.price as price,
                 $sub_prices.sub_price as subprice, $sub_prices.desc_id as subprice_id 
                 
                 from $items
                 ";
-
         $statement.= $this->left_outer($headers, $items, $headers, "header_id", "id");
         $statement.= $this->left_outer($descriptions, $descriptions, $items, "item_id", "id");
         $statement.= $this->left_outer($prices, $prices, $items, "item_id", "id");
