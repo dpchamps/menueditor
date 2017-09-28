@@ -213,22 +213,22 @@
 
         descriptionService.on({
           'dropModel': ({name, el, source, target, dropIndex, model}) => {
-            //swap descriptions, while maintaining ids
+            let
+                ids = this.localItem.descriptions.map(desc => desc.id),
+                currentDragId = this.localItem.descriptions[this.currentDragIdx].id,
+                currentDragIdx = ids.indexOf(currentDragId);
 
-            let swapTo = this.localItem.descriptions[ dropIndex ],
-              swapFrom = this.$lodash.find(this.localItem.descriptions, {'id' : el.dataset.key}),
-              store = this.$lodash.extend({}, swapTo);
+            ids.splice(currentDragIdx, 1);
+            ids.splice(dropIndex, 0,  currentDragId);
 
-           swapTo.id = swapFrom.id;
-           swapFrom.id = store.id;
-
+            this.localItem.descriptions.forEach((description, idx) => {
+              description.id = ids[idx];
+            });
           },
-          'drag' : (opts) =>{
+          'drag' : ({el, container}) =>{
+            this.currentDragIdx = Array.prototype.slice.call(container.children, 0).indexOf(el);
           },
-          'drop' : (opts) =>{
-
-
-          }
+          'drop' : (opts) =>{}
         })
 
       }
