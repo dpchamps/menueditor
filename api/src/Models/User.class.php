@@ -33,8 +33,6 @@ class User extends Auth{
         }
     }
     public function login($username, $password){
-
-        //select from the users table the id where username and the MD5 hash of the password exist
         $query = $this->_db->select(
             'id',
             'users',
@@ -135,12 +133,13 @@ class User extends Auth{
      */
     public function change_password($new_pw){
         //insert new password
-        $hash = password_hash($new_pw);
+        $hash = password_hash($new_pw, PASSWORD_DEFAULT);
         $this->_db->update(
             $this->login_table,
             $this->_id,
             Array('password' => $hash )
         );
+        var_dump( $this->_db->get_connection()->error );
         //update timestamp
         $this->update_timestamp();
     }
