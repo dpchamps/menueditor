@@ -3,8 +3,11 @@
     <commit-changes v-show="changes"></commit-changes>
     <list-edit-widget></list-edit-widget>
     <ul>
-      <li v-for="(item,idx) in itemsInHeader" :class="item.alteration">
-        <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
+      <li v-for="(item,idx) in itemsInHeader" :class="[item.alteration, {selected : isChecked(item.id)}]" >
+        <span class="checkbox-group">
+          <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
+          <label :for="idx"></label>
+        </span>
         <router-link :to="{path: link+section+'/'+item.id }">{{item.title}}</router-link>
       </li>
     </ul>
@@ -71,7 +74,8 @@
         },
         itemList(){
           return this.$store.getters.getItemList;
-        }
+        },
+
       },
       methods:{
         getItemList(page, subPage){
@@ -95,6 +99,11 @@
               page    = this.$route.params.page;
             this.getItemList(page, subPage);
           }
+        },
+        isChecked(id){
+          return this.itemCheckList.filter((item) => {
+            return item.id === id;
+          }).length;
         }
       },
       watch:{

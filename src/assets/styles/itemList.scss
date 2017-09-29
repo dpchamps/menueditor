@@ -2,6 +2,45 @@
 
 .itemlist ul{
   margin: 0.5em 0;
+  list-style: none;
+  padding: 0;
+}
+.itemlist ul li{
+  margin: 5px 0;
+  padding: 5px 0;
+}
+.itemlist ul li:hover {
+  background-color: lighten($dark-grey, 35);
+}
+.itemlist ul li.selected{
+  background-color: transparentize($red-warn, 0.5);
+}
+
+
+.itemlist ul li .checkbox-group{
+  margin: 5px 10px;
+  position: relative;
+  display: inline-block;
+
+  label {
+    cursor: pointer;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top:0;left:0;
+    background-color: #eee;
+    border: solid 1px $dark-grey;
+    border-radius: 2px;
+    transition: all 150ms linear;
+  }
+  input[type=checkbox]:hover + label{
+    background-color: lighten($dark-grey, 30);
+  }
+  input[type=checkbox]:checked + label {
+    border-color: lighten($dark-grey, 10);
+    background:  lighten($black, 20);
+  }
+
 }
 .itemlist ul li a{
   font-size: 22px;;
@@ -9,15 +48,17 @@
   text-decoration: none;
 }
 
-.itemlist li.change a{
-  color: $green-revert;
+.itemlist li.change {
+    background-color: $green-revert;
 }
-.itemlist ul li.delete a{
-  color: $red-warn;
-  text-decoration: line-through;
+.itemlist ul li.delete {
+  background-color: $red-warn;
+  a {
+    text-decoration: line-through;
+  }
 }
-.itemlist li.create a{
-  color: $blue-change;
+.itemlist li.create{
+  background-color: $blue-change;
 }
 
 .section-select-group h3{
@@ -29,3 +70,4 @@
   padding: 0.25em 1em;
   font-size: 19px;
 }
+
