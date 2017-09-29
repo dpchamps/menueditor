@@ -40,7 +40,7 @@
             <tr
               v-for="(description, idx) in localItem.descriptions"
               v-show="description.text !== ''"
-              :data-key="description.id"
+              :data-id="description.id"
             >
               <th class="delete-description">
                 <button class="modify-description" @click.prevent="removeDescription($event, idx)">
@@ -108,7 +108,8 @@
           isAddDescription: false,
           newDescription:{
             text : '',
-            price : ''
+            price : '',
+            order : ''
           },
           localItem : {},
           propertiesNotCommitted: false,
@@ -141,7 +142,8 @@
             return
           }
           let propToPush = this.$lodash.extend({}, this.$data.newDescription);
-
+          propToPush.order = this.localItem.descriptions.length+"";
+          propToPush.id = Date.now()+"";
           this.localItem.descriptions.push(propToPush);
           this.closeAddDescription();
           this.addDescription();
@@ -193,7 +195,7 @@
       },
       created(){
         this.setLocalItem(this.$props.item);
-
+        this.$lodash.sortBy(this.localItem.descriptions, 'order');
         this.$watch('localItem', (oldVal, newVal) => {
           if(this.hasChanged){
             EventBus.$emit('propsNotCommitted');
@@ -212,23 +214,14 @@
         });
 
         descriptionService.on({
-          'dropModel': ({name, el, source, target, dropIndex, model}) => {
-            let
-                ids = this.localItem.descriptions.map(desc => desc.id),
-                currentDragId = this.localItem.descriptions[this.currentDragIdx].id,
-                currentDragIdx = ids.indexOf(currentDragId);
-            console.log(dropIndex, ids);
-            ids.splice(currentDragIdx, 1);
-            ids.splice(dropIndex, 0,  currentDragId);
-
-            this.localItem.descriptions.forEach((description, idx) => {
-              description.id = ids[idx];
+          'drop' : ({container}) =>{
+            //on drop, reorder list
+            Array.prototype.slice.call(container.children, 0).forEach((el, idx) =>{
+              let id = el.dataset.id;
+              this.$lodash.find(this.localItem.descriptions, {'id' : id}).order = idx;
+              //this.$lodash.sortBy(this.localItem.descriptions, ['id'])
             });
-          },
-          'drag' : ({el, container}) =>{
-            this.currentDragIdx = Array.prototype.slice.call(container.children, 0).indexOf(el);
-          },
-          'drop' : (opts) =>{}
+          }
         })
 
       }

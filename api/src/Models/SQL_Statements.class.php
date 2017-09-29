@@ -86,13 +86,15 @@ class SQL_Statements {
         $table = $args['prefix']."descriptions";
         $vals  = $args['vals'];
         $text  = $args['text'];
-
+        $order = $args['order'];
+        
         return "INSERT INTO $table
-                        (id, item_id, description)
+                        (id, item_id, description, list_order)
                         VALUES
                         $vals
                         ON DUPLICATE KEY UPDATE
-                        description = '$text'
+                        description = '$text',
+                        list_order = '$order'
                         ";
     }
     private function update_subprices($args){

@@ -118,31 +118,32 @@ class SQLInterface
         $this->sql->query("destroy", $table, ['id' => $id]);
 
     }
-    private function update_description($description_id, $item_id, $text){
-
+    private function update_description($description_id, $item_id, $text, $order){
+      
         $vals = "";
-        if(!$description_id){
-            $vals = "(NULL, '$item_id', '$text')";
+        if(!$description_id || $description_id > 1000000000000){
+            $vals = "(NULL, '$item_id', '$text', '$order')";
         }else{
-            $vals = "('$description_id', '$item_id', '$text')";
+            $vals = "('$description_id', '$item_id', '$text', '$order')";
         }
         $this->sql->query('update_descriptions', [
             'prefix' => $this->queryPrefix,
             'vals'   => $vals,
-            'text'   => $text
+            'text'   => $text,
+            'list_order' => $order
         ]);
     }
     private function update_descriptions($descriptions, $item_id){
         foreach($descriptions as $desc){
             $id = $this->util->check($desc['id']);
             $text = $this->util->check($desc['text']);
+            $order = $this->util->check($desc['order']);
             $price = $this->util->check($desc['price']);
-
             if(!$text){
                 $this->delete_description($id);
                 $this->delete_subprice($id);
             }else{
-                $this->update_description($id, $item_id, $text);
+                $this->update_description($id, $item_id, $text, $order);
                 $this->update_subprices($id, $price);
             }
         }
