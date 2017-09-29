@@ -5,6 +5,8 @@ import Vuex from 'vuex';
 import credentials from './modules/credentials';
 import menuCache from './modules/menuCache';
 import changesMade from './modules/changesMade';
+import itemList from './modules/itemList';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,6 +15,7 @@ export default new Vuex.Store({
   modules:{
     credentials,
     menuCache,
-    changesMade
+    changesMade,
+    itemList
   }
 });
