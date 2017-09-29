@@ -3,7 +3,7 @@
     <button class="undo" @click="undoChanges" :disabled="!this.$parent.hasChanged"> Undo <i class="fa fa-undo" aria-hidden="true"></i>  </button>
     <button class="save" @click="saveChanges"> Save <i class="fa fa-download" aria-hidden="true"></i>  </button>
     <button class="remove" @click="removeItem"> Remove <i class="fa fa-remove" aria-hidden="true"></i> </button>
-    <router-link :to="backLink"><button  class="close"><i class="fa fa-remove" aria-hidden="true"></i></button></router-link>
+    <button class="close" @click="closeItem">Close <i class="fa fa-remove" aria-hidden="true"></i></button>
   </div>
 </template>
 
@@ -11,7 +11,7 @@
     export default {
       methods:{
         undoChanges(){
-          EventBus.$emit('propsCommitted');
+            EventBus.$emit('propsCommitted');
             EventBus.$emit('itemUndoChanges');
         },
         saveChanges(){
@@ -22,14 +22,9 @@
           if(confirm("Are you sure you want to delete this item?")) {
             EventBus.$emit('itemRemove', this.$parent.localItem);
           }
-        }
-      },
-      computed:{
-        backLink(){
-          let page = this.$route.params.page;
-          let subpage =  this.$route.params.subpage;
-          let section = this.$route.params.section;
-          return "/dashboard/"+page+'/'+subpage+'/'+section;
+        },
+        closeItem(){
+          EventBus.$emit('itemClose');
         }
       }
     }
