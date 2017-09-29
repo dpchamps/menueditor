@@ -133,7 +133,7 @@
             type: "delete"
           });
           this.mergeItemsStagedForChange();
-
+          EventBus.$emit('itemClose');
         });
         EventBus.$on('selectAll', ()=>{
           this.itemCheckList = [];
