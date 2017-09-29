@@ -3,7 +3,7 @@
     <commit-changes v-show="changes"></commit-changes>
     <list-edit-widget></list-edit-widget>
     <ul>
-      <li v-for="(item,idx) in itemsInHeader" :class="[item.alteration, {selected : isChecked(item.id)}]" >
+      <li v-for="(item,idx) in itemsInHeader" :class="[item.alteration, {selected : isChecked(item.id)}]" v-show="item.title !== ''">
         <span class="checkbox-group">
           <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
           <label :for="idx"></label>
