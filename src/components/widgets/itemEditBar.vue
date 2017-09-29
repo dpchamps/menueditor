@@ -33,8 +33,9 @@
       },
       computed:{
         canRestore(){
-          let id = this.$parent.localItem.id;
-          let alteration = this.$store.getters.getItemFromId(id).alteration;
+          let id = this.$parent.localItem.id,
+              item = this.$store.getters.getItemFromId(id),
+              alteration = (item) ? item.alteration : false;
           return (alteration) ? alteration === 'delete' : false;
         }
       }
