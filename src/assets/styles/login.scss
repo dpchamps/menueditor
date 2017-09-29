@@ -1,0 +1,36 @@
+.login-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+}
+.login{
+  width: 100%;
+  max-width: 350px;
+  background-color: #ececec;
+  border-radius: 5px;
+  padding: 0.25em 0;
+}
+.login .group{
+  font-size: 19px;
+}
+
+.login .group input{
+  width: 100%;
+  letter-spacing: 1px;
+  font-size: 19px;
+}
+.login button{
+  letter-spacing: 1px;
+  font-size: 19px;
+}
+.login .group, button{
+  display: block;
+  margin: 1em auto;
+  width: 70%;
+}
+
+.login label{
+  display: block;
+  margin: 0.25em 0;
+}

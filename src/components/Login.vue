@@ -1,18 +1,20 @@
 <template>
-  <form class="login" v-on:submit.prevent>
-    <div v-show="error">
-      <p>{{error}}</p>
-    </div>
-    <div class="group">
-      <label for="username">Username:</label>
-      <input id="username" name="username" type="text" v-model="username">
-    </div>
-    <div class="group">
-      <label for="password">Password</label>
-      <input id="password" type="password" v-model="password">
-    </div>
-    <button type="submit" @click="checkLogin">Login</button>
-  </form>
+  <div class="login-container">
+    <form class="login" v-on:submit.prevent>
+      <div v-show="error">
+        <p>{{error}}</p>
+      </div>
+      <div class="group">
+        <label for="username">username</label>
+        <input id="username" name="username" type="text" v-model="username">
+      </div>
+      <div class="group">
+        <label for="password">password</label>
+        <input id="password" type="password" v-model="password">
+      </div>
+      <button type="submit" @click="checkLogin">Login</button>
+    </form>
+  </div>
 </template>
 
 <script type="text/babel">
@@ -43,6 +45,6 @@
     }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+@import "../assets/styles/login.scss";
 </style>
