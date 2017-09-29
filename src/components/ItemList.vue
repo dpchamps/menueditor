@@ -74,7 +74,7 @@
         },
         itemList(){
           return this.$store.getters.getItemList;
-        },
+        }
 
       },
       methods:{
@@ -104,6 +104,9 @@
           return this.itemCheckList.filter((item) => {
             return item.id === id;
           }).length;
+        },
+        mergeItemsStagedForChange(){
+          this.$store.commit('mergeItemsStagedForChange', this.$store.getters.getChangesList);
         }
       },
       watch:{
@@ -152,6 +155,9 @@
             type: "create"
           });
           this.mergeItemsStagedForChange();
+          this.$nextTick(()=>{
+            this.$router.replace(this.link+this.section+'/'+newItem.id);
+          })
         });
         EventBus.$on('deleteSelectedItems', ()=>{
           this.itemCheckList.forEach(itemToDelete =>{
