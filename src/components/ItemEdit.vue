@@ -184,7 +184,11 @@
           return this.$lodash.uniq( this.$lodash.map(itemList, (item) => { return item.header }))
         },
         close(){
-          if(this.localItem.newItem && this.$store.getters.getItemFromId(this.localItem.id).title === ''){
+          let itemInStore = this.$store.getters.getItemFromId(this.localItem.id);
+          if( this.localItem.newItem &&
+              itemInStore.title === '' &&
+              itemInStore.alteration !== 'delete'){
+
             alert("New item has to have a title")
           }else{
             this.$router.push({name: 'section-view'})
