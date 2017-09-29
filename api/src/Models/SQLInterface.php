@@ -119,7 +119,6 @@ class SQLInterface
 
     }
     private function update_description($description_id, $item_id, $text, $order){
-      
         $vals = "";
         if(!$description_id || $description_id > 1000000000000){
             $vals = "(NULL, '$item_id', '$text', '$order')";
@@ -130,7 +129,7 @@ class SQLInterface
             'prefix' => $this->queryPrefix,
             'vals'   => $vals,
             'text'   => $text,
-            'list_order' => $order
+            'order' => $order
         ]);
     }
     private function update_descriptions($descriptions, $item_id){

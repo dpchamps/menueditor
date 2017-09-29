@@ -92,6 +92,9 @@
         getItemList(page, subPage){
           this.$api.getItemList(page, subPage).then((response) => {
             this.$data.itemList = this.$lodash.assign(response.data);
+            this.$data.itemList.forEach(item =>{
+              item.descriptions = this.$lodash.sortBy(item.descriptions, 'order');
+            });
             this.mergeItemsStagedForChange();
             this.getCurrentItem();
           });

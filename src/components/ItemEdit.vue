@@ -195,7 +195,7 @@
       },
       created(){
         this.setLocalItem(this.$props.item);
-        this.$lodash.sortBy(this.localItem.descriptions, 'order');
+
         this.$watch('localItem', (oldVal, newVal) => {
           if(this.hasChanged){
             EventBus.$emit('propsNotCommitted');
