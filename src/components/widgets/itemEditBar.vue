@@ -1,7 +1,7 @@
 <template>
   <div class="item-edit-bar">
     <button class="undo" @click="undoChanges" :disabled="!this.$parent.hasChanged"> Undo <i class="fa fa-undo" aria-hidden="true"></i>  </button>
-    <button class="save" @click="saveChanges" :disabled="!this.$parent.hasChanged">
+    <button class="save" @click="saveChanges" :disabled="!this.$parent.hasChanged && !canRestore">
       <span v-show="!canRestore"> Save <i class="fa fa-download" aria-hidden="true"></i> </span>
       <span v-show="canRestore"> Restore <i class="fa fa-upload" aria-hidden="true"></i> </span>
 
