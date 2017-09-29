@@ -169,7 +169,7 @@
         },
         setLocalItem(item){
           this.localItem = this.$lodash.cloneDeep(item);
-          this.currentHeaders = this.headersInNewSection(this.$parent.$data.itemList);
+          this.currentHeaders = this.$store.getters.getItemListHeaders;
           this.currentSubPage = this.subPage;
         },
         subPageLookup(evt){
