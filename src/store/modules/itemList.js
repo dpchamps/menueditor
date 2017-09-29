@@ -19,6 +19,9 @@ const getters = {
   },
   getItemList: (state) => {
     return state.itemList;
+  },
+  getItemListHeaders: (state) => {
+    return lodash.uniq( lodash.map( state.itemList, item => item.header ) );
   }
 };
 const mutations = {
