@@ -34,14 +34,15 @@
             header: "",
             price: "",
             list_order: -1,
-            title: "new item",
+            title: "",
             descriptions: [
               {
                 id: null,
                 price: "",
                 text: ""
               }
-            ]
+            ],
+            newItem: true
           }
         }
       },

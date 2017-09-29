@@ -2,12 +2,12 @@
   <div class="item-edit-modal" @click="close">
     <div class="item-editor" @click.stop>
       <item-edit-bar></item-edit-bar>
-      <hr>
       <table class="top-section">
         <tr class="title">
           <th>Item Title: </th>
           <item-property itemkey="title" colspan="2">
-            <span slot="item">{{localItem.title}}</span>
+            <span slot="item" v-show="localItem.title">{{localItem.title}}</span>
+            <span slot="item" v-show="!localItem.title">(add description)</span>
           </item-property>
         </tr>
         <tr class="price">
@@ -184,7 +184,11 @@
           return this.$lodash.uniq( this.$lodash.map(itemList, (item) => { return item.header }))
         },
         close(){
-          this.$router.go(-1);
+          if(this.localItem.newItem && this.$store.getters.getItemFromId(this.localItem.id).title === ''){
+            alert("New item has to have a title")
+          }else{
+            this.$router.push({name: 'section-view'})
+          }
         }
       },
       watch:{
@@ -204,6 +208,9 @@
 
         EventBus.$on('itemUndoChanges', ()=>{
           this.setLocalItem(this.$props.item);
+        });
+        EventBus.$on('itemClose', ()=>{
+          this.close();
         });
 
         let descriptionService = this.$dragula.createService({
