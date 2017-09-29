@@ -315,9 +315,12 @@ class SQLInterface
     public function subpage_item($subpage, $item_id){
         $items = $this->subpage_data($subpage);
 
-        return  array_filter($items, function($_item) use ($item_id){
-            return $_item['id'] == $item_id;
-        });
+        $filtered = array_values(array_filter($items, function($_item) use ($item_id){
+            return $_item['id'] === $item_id;
+        }));
+
+        return $filtered;
+        
     }
 
     public function defaultResponse(){
