@@ -2,7 +2,6 @@
   <div class="itemlist">
     <commit-changes v-show="changes"></commit-changes>
     <list-edit-widget></list-edit-widget>
-
     <ul>
       <li v-for="(item,idx) in itemsInHeader" :class="item.alteration">
         <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
