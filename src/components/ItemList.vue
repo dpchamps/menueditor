@@ -1,9 +1,6 @@
 <template>
   <div class="itemlist">
     <commit-changes v-show="changes"></commit-changes>
-    <template v-for="header in itemListHeaders">
-      <router-link :to="{path: link+header }">{{header}}</router-link>
-    </template>
     <list-edit-widget></list-edit-widget>
 
     <ul>
@@ -28,7 +25,6 @@
       },
       data(){
         return{
-          itemList: [],
           itemCheckList : [],
           currentItem: {},
           newItemTemplate: {
@@ -48,8 +44,9 @@
         }
       },
       computed:{
-        itemListHeaders(){
-          return this.$lodash.uniq( this.$lodash.map(this.$data.itemList, (item) => { return item.header }))
+
+        siteSection(){
+          return this.$route.params.subpage;
         },
         section(){
           return this.$route.params.section;
@@ -63,7 +60,7 @@
         itemsInHeader(){
           var header = this.$route.params.section;
           if(header){
-            return this.$lodash.groupBy(this.$data.itemList, 'header')[header];
+            return this.$lodash.groupBy(this.itemList, 'header')[header];
           }
         },
 
@@ -72,50 +69,26 @@
         },
         changes(){
           return this.$store.getters.isChanges;
+        },
+        itemList(){
+          return this.$store.getters.getItemList;
         }
       },
       methods:{
-        mergeItemsStagedForChange(){
-          let changes = this.$store.state.changesMade.items;
-          changes.forEach(item =>{
-            let _item = this.$lodash.find(this.$data.itemList, {id : item.id});
-            let idx = this.$data.itemList.indexOf(_item);
-
-            _item = this.$lodash.assign(item);
-            if(idx > -1){
-              this.$data.itemList.splice(idx, 1, _item);
-            }else{
-              this.$data.itemList.push(_item);
-            }
-          });
-        },
         getItemList(page, subPage){
           this.$api.getItemList(page, subPage).then((response) => {
-            this.$data.itemList = this.$lodash.assign(response.data);
-            this.$data.itemList.forEach(item =>{
-              item.descriptions = this.$lodash.sortBy(item.descriptions, 'order');
-            });
-            this.mergeItemsStagedForChange();
+            this.$store.commit('setItemList', response.data);
+            this.$store.commit('mergeItemsStagedForChange', this.$store.state.changesMade.items);
             this.getCurrentItem();
+            EventBus.$emit('itemListLoad');
           });
         },
         getCurrentItem(){
-          console.log("getting current item");
           if(this.$route.params.item){
-            this.currentItem = this.$lodash.find(this.itemList, {id : this.$route.params.item})
+            this.currentItem = this.$store.getters.getItemFromId(this.$route.params.item);
           }else{
             this.currentItem = {};
           }
-        },
-        setCurrentItem(item){
-          this.currentItem = this.$lodash.extend({}, item);
-          let listItem = this.itemList.filter(item =>{
-            return item.id === this.currentItem.id;
-          })[0];
-          let idx = this.itemList.indexOf(listItem);
-
-          this.$set(this.itemList, idx, this.currentItem);
-
         },
         checkForItemList(){
           if(this.$route.params.subpage){
@@ -123,9 +96,6 @@
               page    = this.$route.params.page;
             this.getItemList(page, subPage);
           }
-        },
-        itemUrl(){
-
         }
       },
       watch:{
@@ -194,23 +164,5 @@
 </script>
 
 <style lang="scss">
-  .itemlist ul{
-    margin: 0.5em 0;
-  }
-  .itemlist ul li a{
-    font-size: 22px;;
-    color: #333;
-    text-decoration: none;
-  }
-
-  .itemlist li.change a{
-    color: mediumspringgreen;
-  }
-  .itemlist ul li.delete a{
-    color: orangered;
-    text-decoration: line-through;
-  }
-  .itemlist li.create a{
-    color: dodgerblue;
-  }
+  @import '../assets/styles/itemList.scss';
 </style>

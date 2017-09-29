@@ -1,0 +1,31 @@
+@import 'vars/palette';
+
+.itemlist ul{
+  margin: 0.5em 0;
+}
+.itemlist ul li a{
+  font-size: 22px;;
+  color: $black;
+  text-decoration: none;
+}
+
+.itemlist li.change a{
+  color: $green-revert;
+}
+.itemlist ul li.delete a{
+  color: $red-warn;
+  text-decoration: line-through;
+}
+.itemlist li.create a{
+  color: $blue-change;
+}
+
+.section-select-group h3{
+  display: inline-block;
+  font-size: 16px;
+}
+
+.section-select-group select{
+  padding: 0.25em 1em;
+  font-size: 19px;
+}
