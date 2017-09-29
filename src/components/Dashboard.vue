@@ -61,5 +61,5 @@
 </script>
 
 <style lang="scss">
-
+@import '../assets/styles/dashboard.scss';
 </style>

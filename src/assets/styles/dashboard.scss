@@ -1,0 +1,36 @@
+@import 'vars/palette';
+
+.dashboard {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+//Pages
+.pages-editable a {
+  text-decoration: none;
+  color: $black;
+  box-shadow: 0 3px 0px 0px $black;
+}
+.pages-editable .page-link-container{
+  margin: 1em 0;
+}
+.pages-editable .page-link{
+  font-size: 25px;
+}
+.pages-editable .page-link.selected{
+  color: $green-select;
+  box-shadow: 0 3px 0px 0px $green-select;
+
+}
+.pages-editable h2{
+  display: inline-block;
+}
+.pages-editable select{
+  padding: 0.25em 1em;
+  font-size: 19px;
+}
+
+.pages-editable .dropdown-group div{
+  display: inline-block;
+}
