@@ -1,7 +1,11 @@
 <template>
   <div class="item-edit-bar">
     <button class="undo" @click="undoChanges" :disabled="!this.$parent.hasChanged"> Undo <i class="fa fa-undo" aria-hidden="true"></i>  </button>
-    <button class="save" @click="saveChanges"> Save <i class="fa fa-download" aria-hidden="true"></i>  </button>
+    <button class="save" @click="saveChanges" :disabled="!this.$parent.hasChanged">
+      <span v-show="!canRestore"> Save <i class="fa fa-download" aria-hidden="true"></i> </span>
+      <span v-show="canRestore"> Restore <i class="fa fa-upload" aria-hidden="true"></i> </span>
+
+    </button>
     <button class="remove" @click="removeItem"> Remove <i class="fa fa-remove" aria-hidden="true"></i> </button>
     <button class="close" @click="closeItem">Close <i class="fa fa-remove" aria-hidden="true"></i></button>
   </div>
@@ -25,6 +29,13 @@
         },
         closeItem(){
           EventBus.$emit('itemClose');
+        }
+      },
+      computed:{
+        canRestore(){
+          let id = this.$parent.localItem.id;
+          let alteration = this.$store.getters.getItemFromId(id).alteration;
+          return (alteration) ? alteration === 'delete' : false;
         }
       }
     }

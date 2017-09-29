@@ -18,10 +18,11 @@
   background-color: $green-revert;
   border-color: darken($green-revert, 15);
 }
-.item-edit-bar button.undo[disabled]{
-  background-color: $dark-grey;
-  border-color: $dark-grey;
-  cursor: not-allowed;
+.item-edit-bar button[disabled]{
+  background-color: $dark-grey!important;
+  border-color: $dark-grey!important;
+  color: darken($dark-grey, 20)!important;
+  cursor: not-allowed!important;
 
 }
 
