@@ -26,18 +26,22 @@ export default new Router({
       name: 'Dashboard',
       children: [
         {
+          name: 'page-view',
           path: '/dashboard/:page',
           component: Dashboard
         },
         {
+          name:'subpage-view',
           path: '/dashboard/:page/:subpage',
           component: Dashboard
         },
         {
+          name: 'section-view',
           path: '/dashboard/:page/:subpage/:section',
           component: Dashboard
         },
         {
+          name: 'item-view',
           path: '/dashboard/:page/:subpage/:section/:item',
           component: Dashboard
         }
