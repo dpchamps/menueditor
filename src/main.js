@@ -15,6 +15,7 @@ Vue.use(Vue2Dragula);
 
 Vue.prototype.$lodash = require('lodash');
 require('font-awesome/scss/font-awesome.scss');
+require('./assets/styles/main.scss');
 window.EventBus = new Vue();
 
 Vue.config.productionTip = false;
