@@ -36,7 +36,7 @@
        <hr>
         <table class="descriptions">
           <tr><th colspan="3">Item Descriptions</th></tr>
-          <tbody class="drag-container" v-dragula="localItem.descriptions" service="descriptionService">
+          <tbody class="drag-container" v-dragula="localItem.descriptions" service="descriptions">
             <tr
               v-for="(description, idx) in localItem.descriptions"
               v-show="description.text !== ''"
@@ -223,9 +223,9 @@
         });
 
         descriptionService.on({
-          'drop' : ({container}) =>{
+          'descriptions:dropModel' : ({source}) =>{
             //on drop, reorder list
-            Array.prototype.slice.call(container.children, 0).forEach((el, idx) =>{
+            Array.prototype.slice.call(source.children, 0).forEach((el, idx) =>{
               let id = el.dataset.id;
               this.$lodash.find(this.localItem.descriptions, {'id' : id}).order = idx;
             });
