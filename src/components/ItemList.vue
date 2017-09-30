@@ -2,8 +2,8 @@
   <div class="itemlist">
     <commit-changes v-show="changes"></commit-changes>
     <list-edit-widget></list-edit-widget>
-    <ul >
-      <li v-for="(item,idx) in itemsInHeader" :key="item.list_order" :class="[item.alteration, {selected : isChecked(item.id)}]" v-show="item.title !== ''">
+    <ul v-dragula="dragModel" service="itemListService">
+      <li v-for="(item,idx) in itemsInHeader" :key="item.list_order" :class="[item.alteration, {selected : isChecked(item.id)}]" :data-id="item.id" v-show="item.title !== ''">
         <span class="checkbox-group">
           <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
           <label :for="idx"></label>
@@ -28,7 +28,7 @@
       data(){
         return{
           itemCheckList : [],
-          dragModel: {},
+          dragModel: [],
           currentItem: {},
           newItemTemplate: {
             id: -1,
@@ -182,6 +182,27 @@
           EventBus.$emit('itemSaveChanges', this.itemCheckList[1]);
           this.itemCheckList = [];
         });
+
+        let itemListService = this.$dragula.createService({
+          name: 'itemListService'
+        });
+
+        itemListService.on({
+          'itemListService:dropModel' : ({source}) =>{
+            Array.prototype.slice.call(source.children, 0).forEach((el, idx) =>{
+              let id = el.dataset.id;
+              let item = this.$store.getters.getItemFromId(id);
+              let list_order = parseInt(item.list_order, 10);
+              idx+=1;
+              if(list_order !== idx){
+                console.log(item.list_order, idx);
+                item.list_order = idx;
+                EventBus.$emit('itemSaveChanges', item);
+              }
+
+            });
+          }
+        })
 
 
       }
