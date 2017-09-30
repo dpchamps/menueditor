@@ -36,7 +36,7 @@
        <hr>
         <table class="descriptions">
           <tr><th colspan="3">Item Descriptions</th></tr>
-          <tbody class="drag-container" v-dragula="localItem.descriptions" service="descriptions">
+          <tbody class="drag-container" v-dragula="localItem.descriptions" service="descriptionService">
             <tr
               v-for="(description, idx) in localItem.descriptions"
               v-show="description.text !== ''"
@@ -169,6 +169,7 @@
         },
         setLocalItem(item){
           this.localItem = this.$lodash.cloneDeep(item);
+
           this.currentHeaders = this.$store.getters.getItemListHeaders;
           this.currentSubPage = this.subPage;
         },
@@ -218,10 +219,7 @@
         });
 
         let descriptionService = this.$dragula.createService({
-          name: 'descriptions',
-          drake: {
-
-          }
+          name: 'descriptions'
         });
 
         descriptionService.on({
@@ -230,7 +228,6 @@
             Array.prototype.slice.call(container.children, 0).forEach((el, idx) =>{
               let id = el.dataset.id;
               this.$lodash.find(this.localItem.descriptions, {'id' : id}).order = idx;
-              //this.$lodash.sortBy(this.localItem.descriptions, ['id'])
             });
           }
         })

@@ -2,8 +2,8 @@
   <div class="itemlist">
     <commit-changes v-show="changes"></commit-changes>
     <list-edit-widget></list-edit-widget>
-    <ul>
-      <li v-for="(item,idx) in itemsInHeader" :class="[item.alteration, {selected : isChecked(item.id)}]" v-show="item.title !== ''">
+    <ul >
+      <li v-for="(item,idx) in itemsInHeader" :key="item.list_order" :class="[item.alteration, {selected : isChecked(item.id)}]" v-show="item.title !== ''">
         <span class="checkbox-group">
           <input type="checkbox" :id="idx" :name="idx" :value="item" v-model="itemCheckList">
           <label :for="idx"></label>
@@ -28,6 +28,7 @@
       data(){
         return{
           itemCheckList : [],
+          dragModel: {},
           currentItem: {},
           newItemTemplate: {
             id: -1,
@@ -63,7 +64,9 @@
         itemsInHeader(){
           var header = this.$route.params.section;
           if(header){
-            return this.$lodash.groupBy(this.itemList, 'header')[header];
+            return this.$lodash.sortBy(this.$lodash.groupBy(this.itemList, 'header')[header], item =>{
+              return parseInt(item.list_order, 10);
+            });
           }
         },
 
@@ -81,6 +84,11 @@
       methods:{
         getItemList(page, subPage){
           this.$api.getItemList(page, subPage).then((response) => {
+            response.data.forEach(item =>{
+              item.descriptions = this.$lodash.sortBy(item.descriptions, (description) => {
+                return parseInt(description.order, 10);
+              });
+            });
             this.$store.commit('setItemList', response.data);
             this.$store.commit('mergeItemsStagedForChange', this.$store.state.changesMade.items);
             this.getCurrentItem();
@@ -167,13 +175,15 @@
           });
         });
         EventBus.$on('swapItems', ()=>{
-
           let loa = this.itemCheckList[0].list_order;
           this.itemCheckList[0].list_order = this.itemCheckList[1].list_order;
           this.itemCheckList[1].list_order = loa;
           EventBus.$emit('itemSaveChanges', this.itemCheckList[0]);
           EventBus.$emit('itemSaveChanges', this.itemCheckList[1]);
+          this.itemCheckList = [];
         });
+
+
       }
     }
 </script>
