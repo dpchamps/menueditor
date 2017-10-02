@@ -19,8 +19,11 @@
             EventBus.$emit('itemUndoChanges');
         },
         saveChanges(){
+          let itemToCommit = this.$lodash.extend({}, this.$parent.localItem);
+          itemToCommit.alteration = (itemToCommit.alteration !== 'create') ? 'change' : 'create';
+
           EventBus.$emit('propsCommitted');
-          EventBus.$emit('itemSaveChanges', this.$parent.localItem);
+          EventBus.$emit('itemSaveChanges', itemToCommit);
         },
         removeItem(){
           if(confirm("Are you sure you want to delete this item?")) {

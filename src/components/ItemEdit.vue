@@ -230,11 +230,8 @@
               this.$lodash.find(this.localItem.descriptions, {'id' : id}).order = idx;
             });
           }
-        })
-
+        });
       }
-
-
     }
 </script>
 
