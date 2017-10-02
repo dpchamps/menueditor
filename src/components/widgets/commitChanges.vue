@@ -46,9 +46,8 @@
               changesList.forEach((item,idx) => {
                 setTimeout(()=>{
                   switch(item.alteration) {
+                    case 'rearrange':
                     case 'change':
-                      console.log("changing item");
-
                       apiCall = this.$api.change(item);
                       break;
                     case 'delete':
