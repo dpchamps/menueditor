@@ -61,6 +61,18 @@
   background-color: $blue-change;
 }
 
+.itemlist li.rearrange{
+  position: relative;
+  margin-left: 0.25em;
+  &:before{
+    content: '\f061';
+    font-family: FontAwesome;
+    position: absolute;
+    top:0.5em;
+    left: -0.5em;
+  }
+}
+
 .section-select-group h3{
   display: inline-block;
   font-size: 16px;
